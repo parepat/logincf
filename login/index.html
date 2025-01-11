@@ -426,7 +426,7 @@
     async function loginResult(result) {
       if (result) {
         let userId = liff.getDecodedIDToken().sub;
-        fetch(`${scriptUrl}?opt=set&&uid=${userId}&index=${result}`).then(
+        fetch(`${scriptUrl}?opt=set&uid=${userId}&index=${result}`).then(
           (response) => {
             let json = response.json;
             console.log(JSON.stringify(json));
