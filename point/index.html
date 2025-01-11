@@ -248,6 +248,7 @@
           liff.login({
             redirectUri: location.href
           });
+          return
         }
         liff.getProfile().then(profile => {
           $('.user-name').text(profile.displayName);
