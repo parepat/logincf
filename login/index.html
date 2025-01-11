@@ -395,16 +395,7 @@
       liff.init({ liffId: '1655605297-2J9qrOqk' });
       liff.ready.then(() => {
         if (liff.isLoggedIn()) {
-          liff.getProfile().then((profile) => {
-            let userId = profile.userId;
-            let scriptUrl = 'https://script.google.com/macros/s/AKfycbyVbIHoxiO3K7IPge1vmYFijzTd0JsGY_veLS4cCeyYOSEj7bCQ_ycHbrnfB5H3PHhA/exec';
-            fetch(`${scriptUrl}?opt=get&&uid=${userId}`).then((response) => {
-              let json = response.json;
-              if (json) {
-                liff.closeWindow();
-              }
-            });
-          });
+         
         } else {
           liff.login({
             redirectUri: location.href
