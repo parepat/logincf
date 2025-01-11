@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- no cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <!-- no cache -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CF Profile</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Mitr', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .btn-orange {
+      background-color: #fb8d35;
+      border-color: #fb8d35;
+      color: #fff;
+    }
+
+    .btn-orange:hover {
+      background-color: #f76c1b;
+      border-color: #f76c1b;
+      color: #fff;
+    }
+
+    .pagination .page-item .page-link {
+      color: #fb8d35;
+      background-color: #fff;
+      border: 1px solid #fb8d35;
+      border-radius: 20%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 5px;
+    }
+
+    .pagination .page-item.active .page-link {
+      background-color: #fb8d35;
+      color: #fff;
+      border: 1px solid #fb8d35;
+    }
+
+    .pagination .page-item .page-link:hover {
+      background-color: #f76c1b;
+      color: #fff;
+    }
+
+    .pagination .page-item.disabled .page-link {
+      color: #6c757d;
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+    }
+
+    #gifts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #gifts .card {
+      width: 100%;
+    }
+
+    #gifts .card img {
+      width: 100%;
+      max-height: 250px;
+      object-fit: cover;
+    }
+
+    nav .user-image {
+      border: 3px solid #fb8d35;
+      box-shadow: 0 0 40px rgba(251, 141, 53, 0.5);
+    }
+
+    .user-image {
+      border: 5px solid #fb8d35;
+      box-shadow: 0 0 100px rgba(251, 141, 53, 0.5);
+      margin: 10px 0 30px 0 !important;
+    }
+
+    .userPoints {
+      color: #fb8d35;
+      font-weight: bold;
+    }
+
+    #activities .alert {
+      border-left: 5px solid #fb8d35;
+      border-radius: 0;
+      margin: 10px 0;
+
+    }
+  </style>
+
+</head>
+
+<body>
+  <nav class="navbar bg-body-tertiary d-none fixed-top" id="navbar">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="#">
+        <img src="https://img.icons8.com/plumpy/96/user.png" class="rounded-circle user-image" alt="User Image"
+          width="40" height="40">
+        <button class="btn btn-orange btn-sm rounded-4 user-name" onclick="location.reload();">---------</button>
+      </a>
+      <span><span class="userPoints">---</span> พอยท์</span>
+    </div>
+  </nav>
+  <div class="container-fluid mt-5 d-none" id="profileCard">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-6">
+        <div class="card rounded-4 text-center">
+          <div class="card-body">
+            <img src="https://img.icons8.com/plumpy/96/user.png" class="rounded-circle mb-3 user-image" alt="User Image"
+              width="150" height="150">
+            <h3 class="card-title">
+              <button class="btn btn-orange btn-lg rounded-4 user-name" onclick="location.reload();">---------</button>
+            </h3>
+            <div class="d-flex flex-column justify-content-center">
+              <span class="card-text">คุณมี <span class="userPoints">
+                  <div class="spinner-border spinner-border-sm text-warning" role="status" id="spinner-point">
+                  </div>
+                </span> พอยท์ <button class="btn btn-link btn-sm " id="refresh-point-btn"><i class="bi bi-arrow-clockwise"></i></button></span>
+              <small class="card-text text-muted">สามารถใช้ได้ <small class="available-point">---</small> พอยท์</small>
+
+              </small>
+
+              <div class="row justify-content-center">
+                <div class="col-6">
+                  <button class="btn btn-orange mt-3 rounded-4 w-100" data-bs-toggle="modal"
+                    data-bs-target="#redeemModal"><i class="bi bi-gift-fill"></i> แลกของรางวัล</button>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-orange mt-3 rounded-4 w-100" data-bs-toggle="modal"
+                    data-bs-target="#redeemPointModal"><i class="bi bi-plus-circle-fill"></i> เพิ่มพอยท์</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid mt-3 mb-5 d-none" id="activityCard">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-6">
+        <div class="card rounded-4 text-center">
+          <div class="card-body">
+            <h2 class="card-title">
+              <i class="bi bi-calendar-event" style="color: #fb8d35;"></i>
+              ร่วมกิจกรรมเพื่อรับพอยท์ <div class="spinner-border text-warning" role="status" id="spinner-activity"
+                style="font-size: 1rem;">
+              </div>
+            </h2>
+            <div id="activities">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Redeem Rewards Modal -->
+  <div class="modal fade" id="redeemModal" tabindex="-1" aria-labelledby="redeemModalLabel" aria-hidden="true"
+    data-bs-focus="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="redeemModalLabel">
+            <i class="bi bi-bag-heart-fill" style="color: #fb8d35;"></i>
+            Redeem Rewards
+            <button class="btn btn-orange btn-sm rounded-pill position-relative" id="cart-btn">
+              <i class="bi bi-cart4 fs-6"></i> ตะกร้าของรางวัล
+              <span
+                class="position-absolute d-none top-0 start-100 translate-middle badge rounded-pill bg-danger fw-normal">
+              </span>
+            </button>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row" id="gifts">
+            <div class="spinner-border text-warning" role="status" id="spinner-gift">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center m-0 p-0" id="pagination">
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Redeem Points Modal -->
+  <div class="modal fade" id="redeemPointModal" tabindex="-1" aria-labelledby="redeemPointModalLabel" aria-hidden="true"
+    data-bs-focus="false">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-body">
+          <form id="redeemForm">
+            <div class="mb-3 text-center">
+              <label for="redeemCode" class="form-label fs-1 fw-bold">
+                <i class="bi bi-plus-circle-fill" style="color: #fb8d35;"></i>
+                Redeem Code</label>
+              <input type="text" class="form-control form-control-lg text-center" id="redeemCode"
+                placeholder="กรอกรหัสจากกิจกรรม เพื่อรับคะแนน" required>
+            </div>
+            <button type="submit" class="btn btn-orange w-100 rounded-4">Redeem</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzf_eKoHr6ClKxLHVZ6IuI5PWHOVvtGR9aDjdIhGMUZ8Gg4emo/exec';
+    var gifts = [];
+    var activities = [];
+    $(document).ready(function () {
+    
+      liff.init({ liffId: '1655605297-EjK9Op95' })
+      liff.ready.then(() => {
+        if (!liff.isLoggedIn()) {
+          liff.login({
+            redirectUri: location.href
+          });
+        }
+        liff.getProfile().then(profile => {
+          $('.user-name').text(profile.displayName);
+          $('.user-image').attr('src', profile.pictureUrl);
+
+        });
+        Swal.fire({
+          iconHtml: '<image src="' + liff.getDecodedIDToken().picture + '"  class="rounded-circle mb-3 user-image" alt="User Image" width="150" height="150">',
+          customClass: {
+            icon: 'text-warning fs-4 border-0',
+          },
+          title: 'กำลังโหลดข้อมูล...',
+          html: '<div class="spinner-border text-warning" role="status" id="spinner-point"></div>',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+        })
+        Promise.all([
+          $.get(scriptUrl, { opt: 'getGifts' }),
+          $.get(scriptUrl, { opt: 'getActivities' }),
+          $.get(scriptUrl, { opt: 'getUserPoint', uid: liff.getDecodedIDToken().sub })
+        ]).then(([g, a, userpoint]) => {
+          gifts = g;
+          activities = a;
+          Swal.close();
+          if (userpoint.status === 'error') {
+            localStorage.removeItem('userPoints:' + liff.getDecodedIDToken().sub);
+            $('body').find('nav,div').remove();
+            return Swal.fire({
+              iconHtml: '<i class="bi bi-person-fill-x"></i>',
+              customClass: {
+                icon: 'text-danger fs-4 border-0',
+              },
+              title: 'เกิดข้อผิดพลาด',
+              html: userpoint.message,
+              allowOutsideClick: false,
+              showConfirmButton: false,
+            });
+          }
+          localStorage.setItem('user:' + liff.getDecodedIDToken().sub, JSON.stringify(userpoint.user));
+          $('#profileCard, #activityCard').removeClass('d-none');
+          
+          renderPage();
+        });
+      });
+    });
+
+    function renderPage() {
+      let user = JSON.parse(localStorage.getItem('user:' + liff.getDecodedIDToken().sub));
+      const itemsPerPage = 10;
+      let currentPage = 1;
+      const user_points = user.point;
+      const user_available_point = user.available_point;
+      $('#spinner-point').remove();
+      $('#spinner-activity').remove();
+      $('#spinner-gift').remove();
+      $('.userPoints').text(user_points.toLocaleString());
+      $('.available-point').text(user_available_point.toLocaleString());
+      activities.forEach(activity => {
+        const activityCard = `
+          <div class="alert alert-light fade show text-start" role="alert">
+            <div class="d-flex flex-column gap-2">
+              <div>
+                <span class="badge bg-secondary fw-normal">${activity.point} พอยท์</span>
+              </div>
+              <strong>${activity.description}</strong>
+              <div class="d-flex justify-content-between align-items-end">
+                <small><i class="bi bi-calendar-event" style="color: #fb8d35;"></i> ${moment(activity.date).format('ll')}</small>
+                <a class="btn btn-orange btn-sm" href="${activity.url}" role="button" target="_blank">ร่วมกิจกรรม</a>
+              </div>
+            </div>
+          </div>
+        `;
+        $('#activities').append(activityCard);
+      });
+      const renderGifts = function (page) {
+        $('#gifts').fadeOut(300, function () {
+          $('#gifts').empty();
+          const start = (page - 1) * itemsPerPage;
+          const end = start + itemsPerPage;
+          const paginatedGifts = gifts.slice(start, end);
+
+          paginatedGifts.forEach(gift => {
+            const giftCard = `
+              <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card">
+                  <img src="${gift.img}" class="card-img-top" alt="${gift.title}" loading="lazy">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">${gift.title}</h5>
+                    <p class="card-text" style="font-size: 0.7rem;">${gift.description}</p>
+                    <button data-title="${gift.title}" data-gift-id="${gift.id}" data-point="${gift.point}" class="btn btn-orange btn-sm ${gift.point > user_available_point ? 'disabled' : ''} activity-btn">
+                      ${gift.point > user_available_point ? '<i class="bi bi-lock-fill"></i> ยังไม่สามารถแลก' : '<i class="bi bi-gift-fill"></i> '+gift.point + ' พอยท์'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+            $('#gifts').append(giftCard);
+          });
+          $('#gifts').find('.activity-btn').click(function () {
+            const title = $(this).data('title');
+            const point = $(this).data('point');
+            const gift_id = $(this).data('gift-id');
+            const image = $(this).closest('.card').find('img').attr('src');
+            Swal.fire({
+              title: 'ยืนยันการแลกของรางวัล',
+              html: `<div class="card">
+                <img src="${image}" class="card-img-top" alt="${title}">
+                <div class="card-body">
+                  <h5 class="card-title">${title} <small class="text-muted">(${point} พอยท์)</small></h5>
+                  <div class="row">
+                  <div class="col-12">
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">จำนวน</span>
+                      <input type="text" class="form-control text-center" placeholder="กรุณาระบุจำนวน" id="redeemAmount" value="1">
+                      <span class="input-group-text" id="basic-addon1">ชิ้น</span>
+                    </div>
+                  </div>
+                  </div>
+                  <p class="card-text text-danger mt-3" id="reseemQuestionm">คุณต้องการแลก ${title} ใช้ ${point} พอยท์ ใช่หรือไม่?</p>
+                </div>
+                </div>
+                `,
+              willOpen: () => {
+                $('#redeemAmount').on('input', function () {
+                  const amount = $(this).val();
+                  const totalPoints = amount * point;
+                  $('#reseemQuestionm').text(`คุณต้องการแลก ${title} ใช้ ${totalPoints} พอยท์ ใช่หรือไม่?`);
+                });
+              },
+              showCancelButton: true,
+              confirmButtonText: 'ยืนยัน',
+              cancelButtonText: 'ยกเลิก',
+              confirmButtonColor: '#fb8d35',
+              cancelButtonColor: '#6c757d',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                const amount = $('#redeemAmount').val();
+                const totalPoints = amount * point;
+                if (cart.getTotalPoints() + totalPoints > user_points) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'ไม่สามารถแลกของรางวัลได้',
+                    text: 'พอยท์ของคุณไม่เพียงพอ',
+                  });
+                } else {
+                  cart.addItem({ id: gift_id, title, point, amount, image });
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'เพิ่มในตะกร้าเรียบร้อย',
+                    timer: 1000,
+                    timerProgressBar: true,
+                  });
+                  $('#cart-btn .badge').text(cart.getItems().length);
+                }
+              }
+            });
+          });
+          $('#gifts').fadeIn(300);
+
+        });
+      }
+
+      const renderPagination = function () {
+        $('#pagination').empty();
+        const totalPages = Math.ceil(gifts.length / itemsPerPage);
+        let width = $(window).width();
+        const maxPagesToShow = width < 768 ? 3 : width < 992 ? 5 : width < 1200 ? 7 : 9;
+        let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+        let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+        if (endPage - startPage < maxPagesToShow - 1) {
+          startPage = Math.max(1, endPage - maxPagesToShow + 1);
+        }
+
+        const firstPageItem = `
+          <li class="page-item ${currentPage === 1 ? 'disabled' : ''} d-none d-md-block">
+        <a class="page-link" href="#" aria-label="First">
+          <span aria-hidden="true">&laquo;&laquo;</span>
+        </a>
+          </li>
+        `;
+        $('#pagination').append(firstPageItem);
+
+        const prevPageItem = `
+          <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+          </li>
+        `;
+        $('#pagination').append(prevPageItem);
+
+        if (startPage > 1) {
+          const prevGroupPageItem = `
+        <li class="page-item d-none d-md-block">
+          <a class="page-link" href="#" aria-label="PreviousGroup">...</a>
+        </li>
+          `;
+          $('#pagination').append(prevGroupPageItem);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+          const pageItem = `
+        <li class="page-item ${i === currentPage ? 'active' : ''}">
+          <a class="page-link" href="#">${i}</a>
+        </li>
+          `;
+          $('#pagination').append(pageItem);
+        }
+
+        if (endPage < totalPages) {
+          const nextGroupPageItem = `
+        <li class="page-item d-none d-md-block">
+          <a class="page-link" href="#" aria-label="NextGroup">...</a>
+        </li>
+          `;
+          $('#pagination').append(nextGroupPageItem);
+        }
+
+        const nextPageItem = `
+          <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+          </li>
+        `;
+        $('#pagination').append(nextPageItem);
+
+        const lastPageItem = `
+          <li class="page-item ${currentPage === totalPages ? 'disabled' : ''} d-none d-md-block">
+        <a class="page-link" href="#" aria-label="Last">
+          <span aria-hidden="true">&raquo;&raquo;</span>
+        </a>
+          </li>
+        `;
+        $('#pagination').append(lastPageItem);
+
+        $('.page-link').click(function (e) {
+          e.preventDefault();
+          const ariaLabel = $(this).attr('aria-label');
+          if (ariaLabel === 'First') {
+            currentPage = 1;
+          } else if (ariaLabel === 'Previous') {
+            if (currentPage > 1) currentPage--;
+          } else if (ariaLabel === 'Next') {
+            if (currentPage < totalPages) currentPage++;
+          } else if (ariaLabel === 'Last') {
+            currentPage = totalPages;
+          } else if (ariaLabel === 'PreviousGroup') {
+            currentPage = Math.max(1, currentPage - maxPagesToShow);
+          } else if (ariaLabel === 'NextGroup') {
+            currentPage = Math.min(totalPages, currentPage + maxPagesToShow);
+          } else {
+            currentPage = parseInt($(this).text());
+          }
+          renderGifts(currentPage);
+          renderPagination();
+        });
+      }
+      $(window).resize(function () {
+        renderPagination();
+      });
+
+      renderGifts(currentPage);
+      renderPagination();
+    }
+
+
+
+    $('#cart-btn').click(function () {
+      const items = cart.getItems();
+      if (items.length === 0) {
+        Swal.fire({
+          icon: 'info',
+          title: 'ไม่มีของในตะกร้าของรางวัล',
+          text: 'กรุณาเลือกของรางวัลที่ต้องการแลกก่อน',
+          timer: 2000,
+          timerProgressBar: true,
+        });
+      } else {
+        let totalPoints = 0;
+        let cartItems = '';
+        items.forEach((item, index) => {
+          cartItems += `
+            <div class="card mb-3">
+              <div class="card-body m-0 p-0">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                  <img src="${item.image}" class="img-fluid rounded-start" alt="${item.title}" style="max-height: 80px;">
+                  </div>
+                  <div class="flex-grow-1 ms-3 d-flex justify-content-between">
+                      <div class="d-flex flex-column justify-content-start align-items-start">
+                        <span class="card-title">${item.title}</span>
+                        <small class="card-text text-muted">จำนวน ${item.amount} ชิ้น (${item.totalPoints} พอยท์)</small>
+                      </div>
+                      <button class="btn btn-danger btn-sm remove-item-btn rounded-0 rounded-end" data-id="${item.id}"><i class="bi bi-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        Swal.fire({
+          title: 'ตะกร้าของรางวัล',
+          html: cartItems,
+          showCancelButton: true,
+          confirmButtonText: 'ยืนยันการแลกของรางวัล',
+          cancelButtonText: 'ยกเลิก',
+          confirmButtonColor: '#fb8d35',
+          cancelButtonColor: '#6c757d',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            saveRedeemItems();
+          }
+        });
+        $('.remove-item-btn').click(function () {
+          const id = $(this).data('id');
+          cart.removeItem(id);
+          $(this).closest('.card').fadeOut(300, function () {
+            $(this).remove();
+          });
+          if (cart.getItems().length === 0) {
+            Swal.fire({
+              icon: 'info',
+              title: 'ไม่มีของในตะกร้าของรางวัล',
+              text: 'กรุณาเลือกของรางวัลที่ต้องการแลกก่อน',
+              timer: 2000,
+              timerProgressBar: true,
+            });
+          }
+          $('#cart-btn .badge').text(cart.getItems().length);
+        });
+      }
+    });
+
+    $('#refresh-point-btn').click(function () {
+      $('.userPoints').html('<div class="spinner-border spinner-border-sm text-warning" role="status"></div>');
+      $('.available-point').html('<div class="spinner-border spinner-border-sm text-warning" role="status"></div>');
+
+      $.get(scriptUrl, { opt: 'getUserPoint', uid: liff.getDecodedIDToken().sub }, function (userpoint) {
+        if (userpoint.status === 'success') {
+          $('.userPoints').text(userpoint.user.point.toLocaleString());
+          $('.available-point').text(userpoint.user.available_point.toLocaleString());
+          localStorage.setItem('user:' + liff.getDecodedIDToken().sub, JSON.stringify(userpoint.user));
+          renderPage();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: userpoint.message,
+          });
+        }
+      });
+    });
+
+    function saveRedeemItems() {
+      console.log(cart.getItems());
+      let user = JSON.parse(localStorage.getItem('user:' + liff.getDecodedIDToken().sub));
+      user.uid = liff.getDecodedIDToken().sub;
+      Swal.fire({
+        iconHtml: '<i class="bi bi-gift-fill"></i>',
+        customClass: {
+          icon: 'text-warning fs-4 border-0',
+        },
+        html: '<div class="spinner-border text-warning" role="status"></div>',
+        title: 'กำลังแลกของรางวัล...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+      });
+      $.ajax({
+        url: scriptUrl,
+        type: 'POST',
+        data: {
+          opt: 'saveRedeemItems',
+          user: JSON.stringify(user),
+          items: JSON.stringify(cart.getItems())
+        },
+        success: function (response) {
+          console.log(response);
+          if (response.status === 'success') {
+            Swal.fire({
+              icon: 'success',
+              title: 'แลกของรางวัลสำเร็จ',
+              timer: 2000,
+              timerProgressBar: true,
+            });
+            cart.clearCart();
+            $('#refresh-point-btn').click();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: response.message,
+              text: 'กรุณาลองใหม่อีกครั้ง',
+            });
+          }
+        },
+      })
+    }
+
+    $('#redeemForm').submit(function (e) {
+      e.preventDefault();
+      let user = JSON.parse(localStorage.getItem('user:' + liff.getDecodedIDToken().sub));
+      const redeemCode = $('#redeemCode').val();
+      console.log("🚀 ~ redeemCode:", redeemCode)
+      Swal.fire({
+        iconHtml: '<i class="bi bi-hourglass-split"></i>',
+        customClass: {
+          icon: 'text-warning fs-4 border-0',
+        },
+        html: '<div class="spinner-border text-warning" role="status"></div>',
+        title: 'กำลังแลกพอยท์...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+      });
+      $.ajax({
+        url: scriptUrl,
+        type: 'POST',
+        data: {
+          opt: 'redeemCode',
+          code: redeemCode,
+          uid: liff.getDecodedIDToken().sub,
+          user: JSON.stringify(user)
+        },
+        success: function (response) {
+          if (response.status === 'success') {
+           $('#redeemPointModal').modal('hide');
+           $('#redeemCode').val('');
+            let add_point = response.add_point;
+            let total_point = response.total_point;
+            $('.userPoints').text(total_point.toLocaleString());
+           $('#refresh-point-btn').click();
+            Swal.fire({
+              icon: 'success',
+              title: 'แลกพอยท์สำเร็จ',
+              html: `คุณได้รับพอยท์เพิ่ม <span class="fw-bold">${add_point}</span> พอยท์<br>คุณมีพอยท์รวม <span class="fw-bold">${total_point}</span> พอยท์`,
+              confirmButtonText: 'ตกลง',
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'ไม่สามารถแลกพอยท์ได้',
+              text: response
+            });
+          }
+        },
+      })
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      moment().locale('th');
+      let lastScrollTop = 0;
+      $(window).scroll(function () {
+        let scrollTop = $(this).scrollTop();
+        let profileCardTop = $('#profileCard').offset().top + $('#profileCard').outerHeight();
+
+        if (scrollTop > profileCardTop) {
+          $('#navbar').removeClass('d-none');
+        } else {
+          $('#navbar').addClass('d-none');
+        }
+      });
+    });
+  </script>
+  <script>
+    class Cart {
+      constructor() {
+        this.items = JSON.parse(localStorage.getItem('cartItems')) || [];
+        this.updateCartBadge();
+      }
+
+      addItem(item) {
+        const existingItem = this.items.find(i => i.id === item.id);
+        if (existingItem) {
+          existingItem.amount += item.amount;
+          existingItem.totalPoints = existingItem.amount * existingItem.point;
+        } else {
+          item.totalPoints = item.amount * item.point;
+          this.items.push(item);
+        }
+        this.updateCartBadge();
+        this.saveToLocalStorage();
+      }
+
+      removeItem(id) {
+        this.items = this.items.filter(item => item.id !== id);
+        this.updateCartBadge();
+        this.saveToLocalStorage();
+      }
+
+      getItems() {
+        return this.items;
+      }
+
+      clearCart() {
+        this.items = [];
+        this.updateCartBadge();
+        this.saveToLocalStorage();
+      }
+
+      getTotalPoints() {
+        return this.items.reduce((total, item) => total + item.point, 0);
+      }
+
+      updateCartBadge() {
+        $('#cart-btn .badge').text(this.items.length);
+        if (this.items.length === 0) {
+          $('#cart-btn .badge').addClass('d-none');
+        } else {
+          $('#cart-btn .badge').removeClass('d-none');
+        }
+      }
+
+      saveToLocalStorage() {
+        localStorage.setItem('cartItems', JSON.stringify(this.items));
+      }
+    }
+
+    const cart = new Cart();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/locale/th.js"></script>
+</body>
+
+</html>
